@@ -1,0 +1,21 @@
+resources:
+#uses the defined name from the .yaml file
+- name: {{ env["name"] }}
+  type: compute.v1.instance
+  properties:
+    zone: europe-west1-b
+    machineType: zones/europe-west1-b/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: projects/debian-cloud/global/images/family/debian-9
+    #connects the vm to the created network
+    networkInterfaces:
+    - network: {{ properties['network'] }}
+      subnetwork: {{ properties['subnetwork'] }}
+
+#-----REFERENCES-----
+#https://derekfoster1976.github.io/CMP2808M/workshop3.html

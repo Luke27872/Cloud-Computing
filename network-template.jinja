@@ -1,0 +1,7 @@
+resources:
+#uses the defined name from the .yaml file
+- name: {{ env["name"] }}
+  type: compute.v1.network
+  properties:
+    #doesnt auto create subnetworks so they can be manually created
+    autoCreateSubnetworks: false

@@ -1,0 +1,10 @@
+resources:
+#uses the defined name from the .yaml file
+- name: {{ env["name"] }}
+  type: compute.v1.subnetwork
+  properties:
+    ipCidrRange: {{ properties["ipCidrRange"] }}
+    #links subnetwork to the network
+    network: {{ properties["network"] }}
+    #uses the defined region in the .yaml file
+    region: {{ properties["region"] }}

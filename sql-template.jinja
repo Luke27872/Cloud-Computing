@@ -1,0 +1,35 @@
+resources:
+#uses the defined name from the .yaml file
+- name: {{ env["name"] }}
+  type: sqladmin.v1beta4.instance
+  properties:
+    settings:
+      databaseVersion: MySQL 8.0
+      #sets the machine type for the sql instance
+      tier: {{ properties['tier'] }}
+    networkInterfaces:
+    - network: {{ properties['network'] }}
+      subnetwork: {{ properties['subnetwork'] }}
+- name: database
+  type: sqladmin.v1beta4.database
+  properties:
+    name: database
+    #links the database to the sql instance
+    instance: $(ref.{{ env["name"] }}.name)
+    #allows the database to use the UTF-8 charcter set that includes a large number of characters from around the world
+    charset: {{ properties['charset'] }}
+- name: userdatabase
+  type: sqladmin.v1beta4.user
+  metadata:
+    dependsOn:
+      - database
+  properties:
+    name: user
+    #links the database to the sql instance
+    instance: $(ref.{{ env["name"] }}.name)
+    host: {{ properties['hostName'] }}
+    #enables user to use a password for the database
+    password: {{ properties['password'] }}
+
+#-----REFERENCES-----
+#https://github.com/GoogleCloudPlatform/deploymentmanager-samples/blob/master/google/resource-snippets/sqladmin-v1beta4/cloudsql_with_user.jinja

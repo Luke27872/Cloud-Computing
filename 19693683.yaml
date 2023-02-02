@@ -1,0 +1,53 @@
+#imports all the needed jinja files to be run
+imports:
+- path: network-template.jinja
+- path: subnetwork-template.jinja
+- path: firewall-template.jinja
+- path: bucket-template.jinja
+- path: vm1-template.jinja
+- path: sql-template.jinja
+
+
+resources:
+- name: network
+  type: network-template.jinja
+
+- name: subnetwork
+  type: subnetwork-template.jinja
+  properties:
+    ipCidrRange: 10.10.0.0/16
+    #links the subnetwork to the network
+    network: $(ref.network.selfLink)
+    region: europe-west1
+
+- name: firewall
+  type: firewall-template.jinja
+  properties:
+    #links the firewall to the network
+    network: $(ref.network.selfLink)
+    #sets the IP protocol for the firewall to follow
+    IPProtocol: TCP
+
+- name: storagebucket
+  type: bucket-template.jinja
+
+- name: vm1
+  type: vm1-template.jinja
+  properties:
+    #links the vm to the network and subnetwork
+    network: $(ref.network.selfLink)
+    subnetwork: $(ref.subnetwork.selfLink)
+    zone: "europe-west1-b"
+
+- name: mysqlinstancete
+  type: sql-template.jinja
+  properties:
+    #sets the machine type for the sql instance
+    tier: db-g1-small
+    #allows the database to use the UTF-8 charcter set that includes a large number of characters from around the world
+    charset: utf8
+    #sets a host name and password for user
+    password: mobileshoppingpassword
+    hostName: mobileshoppinghost
+    network: $(ref.network.selfLink)
+    subnetwork: $(ref.subnetwork.selfLink)

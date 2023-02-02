@@ -1,0 +1,10 @@
+resources:
+#uses the defined name from the .yaml file
+- name: {{ env["name"] }}
+  type: compute.v1.firewall
+  properties:
+    network: {{ properties["network"] }}
+    sourceRanges: ["0.0.0.0/0"]
+    allowed:
+    #defines which set of IP rules the firewall will use
+    - IPProtocol: {{ properties["IPProtocol"] }}

@@ -1,0 +1,16 @@
+info:
+  title: vm1 template schema
+  author: Luke
+  description: template can only deploy if the correct zone is defined
+  version: 1.0
+
+imports:
+- path: vm1-template.jinja
+
+required:
+- zone
+
+properties:
+  zone:
+    type: string
+    description: Specifies which zome to deploy the vm too

@@ -1,0 +1,9 @@
+resources:
+#uses the defined name from the .yaml file
+- name: {{ env["name"] }}
+  type: storage.v1.bucket
+  properties:
+    #allows for multi regional deployment
+    locationType: multi-region
+    location: US
+    storageClass: STANDARD
